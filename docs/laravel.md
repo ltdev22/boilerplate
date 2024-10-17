@@ -12,4 +12,28 @@ To install a fresh Laravel app inside the _working_laravel_ folder run this comm
 docker run --rm --interactive --tty --volume $PWD:/app composer create-project laravel/laravel working_laravel
 ```
 
+
+## Running Laravel commands through the terminal
+
+In order to run any Laravel commands, like _artisan_ commands, or even _composer_ commands, you can do it do it -either- by ssh-ing to the _php_ running container using the command right below and run the command you want inside the working directory.
+```
+docker compose exec php /bin/sh/
+```
+
+**However!** There's a better way: you can do it by using the _artisan_ and _composer_ services listed in the docker-compose.yml file.
+
+So, to run any Composer commands you can do it like this
+```
+docker compose run --rm composer require laravel/breeze     // install Laravel Breeze
+docker compose run --rm composer require laravel/breeze:"^1.26" // install a specific version
+docker compose run --rm composer update     // update composer packages
+```
+
+Likewise for Artisan commands you can run them like this
+```
+docker compose run --rm artisan migrate
+docker compose run --rm artisan make:model -fms FooModel
+docker compose run --rm artisan make:contoller FooController
+```
+
 [Go back](../README.md)

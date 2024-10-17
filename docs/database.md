@@ -18,6 +18,7 @@ DB_ROOT_PASSWORD= // Fill in a root password - This is required for both MariaDB
 MARIADB_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
 MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
 
+MYSQL_HOST= // Fill in the host name (localhost or the name of the docker container for database)
 MYSQL_DATABASE= // Fill in the database name
 MYSQL_USER= // Fill in the database user
 MYSQL_PASSWORD= // Fill in the database user's password
@@ -48,3 +49,5 @@ We will take as an example the TablePlus, so some of the settings might not be t
 4. Specify the port - should be the same as set above
 5. Same for user, password and database
 6. Test the connection and if it's ok save it
+
+[Go back](../README.md)

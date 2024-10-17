@@ -1,4 +1,15 @@
 services:
+  php-base:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - ./working_laravel:/var/www/html
+    env_file:
+      - "./docker/webapp.env"
+      - "./working_laravel/.env"
+    networks:
+      - boilerplate_network
   web:
     container_name: web
     build:
@@ -17,22 +28,28 @@ services:
     env_file:
       - "./docker/webapp.env"
       - "./working_laravel/.env"
+
   php:
+    extends:
+      service: php-base
     container_name: php
-    build:
-      context: .
-      dockerfile: docker/php/Dockerfile
     depends_on:
       - mysql
-    volumes:
-      - ./working_laravel:/var/www/html
     ports:
       - ${PHP_PORT:-9000}:9000
-    networks:
-      - boilerplate_network
-    env_file:
-      - "./docker/webapp.env"
-      - "./working_laravel/.env"
+
+  composer:
+    extends:
+      service: php-base
+    container_name: composer
+    entrypoint: [ "composer" ]
+
+  artisan:
+    extends:
+      service: php-base
+    container_name: artisan
+    entrypoint: [ "php", "artisan" ]
+
   mysql:
     container_name: mysql
     image: mariadb:10.6

@@ -4,18 +4,33 @@ services:
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
+    depends_on:
+      - php
     volumes:
       - ./working_laravel/public:/var/www/html/public
     networks:
-      - app-network
+      - boilerplate_network
     ports:
       - ${WEB_PORT:-80}:80
       - ${WEB_PORT_SECURE:-443}:443
     env_file:
       - "./docker/webapp.env"
+  php:
+    container_name: php
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    volumes:
+      - ./working_laravel:/var/www/html
+    ports:
+      - ${PHP_PORT:-9000}:9000
+    networks:
+      - boilerplate_network
+    env_file:
+      - "./docker/webapp.env"
 
 networks:
-  app-network:
+  boilerplate_network:
     driver: bridge
 
 volumes:

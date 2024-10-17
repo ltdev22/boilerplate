@@ -1,11 +1,22 @@
 server {
     listen ${WEB_PORT};
     server_name ${WEB_SERVER_NAME};
+    root ${WEB_DOCUMENT_ROOT};
+
     index index.php index.html index.htm;
+
+    location / {
+        try_files $uri $uri/ /index.php?$query_string;
+    }
+
+    location ~ \.php$ {
+        try_files $uri =404;
+        fastcgi_pass php:${PHP_PORT};
+        fastcgi_index index.php;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        include fastcgi_params;
+    }
+
     error_log ${WEB_LOG_DIR}/error.log;
     access_log ${WEB_LOG_DIR}/access.log;
-    root ${WEB_ROOT};
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
 }

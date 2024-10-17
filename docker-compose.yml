@@ -6,6 +6,7 @@ services:
       dockerfile: docker/nginx/Dockerfile
     depends_on:
       - php
+      - mysql
     volumes:
       - ./working_laravel/public:/var/www/html/public
     networks:
@@ -15,11 +16,14 @@ services:
       - ${WEB_PORT_SECURE:-443}:443
     env_file:
       - "./docker/webapp.env"
+      - "./working_laravel/.env"
   php:
     container_name: php
     build:
       context: .
       dockerfile: docker/php/Dockerfile
+    depends_on:
+      - mysql
     volumes:
       - ./working_laravel:/var/www/html
     ports:
@@ -28,6 +32,19 @@ services:
       - boilerplate_network
     env_file:
       - "./docker/webapp.env"
+      - "./working_laravel/.env"
+  mysql:
+    container_name: mysql
+    image: mariadb:10.6
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - ${MYSQL_PORT:-3306}:3306
+    networks:
+      - boilerplate_network
+    env_file:
+      - "./docker/webapp.env"
+      - "./working_laravel/.env"
 
 networks:
   boilerplate_network:

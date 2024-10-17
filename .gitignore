@@ -1,1 +1,4 @@
+_assets/
+/working_laravel
+
 /docker/webapp.env

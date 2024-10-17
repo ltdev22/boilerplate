@@ -1,0 +1,11 @@
+server {
+    listen ${WEB_PORT};
+    server_name ${WEB_SERVER_NAME};
+    index index.php index.html index.htm;
+    error_log ${WEB_LOG_DIR}/error.log;
+    access_log ${WEB_LOG_DIR}/access.log;
+    root ${WEB_ROOT};
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}

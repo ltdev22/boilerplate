@@ -15,7 +15,7 @@ docker run --rm --interactive --tty --volume $PWD:/app composer create-project l
 
 ## Running Laravel commands through the terminal
 
-In order to run any Laravel commands, like _artisan_ commands, or even _composer_ commands, you can do it do it -either- by ssh-ing to the _php_ running container using the command right below and run the command you want inside the working directory.
+In order to run any Laravel commands, like artisan commands, or even composer commands, you can do it do it - either - by ssh-ing to the _php_ running container using the command right below and run the command you want inside the working directory.
 ```
 docker compose exec php /bin/sh/
 ```
@@ -34,6 +34,13 @@ Likewise for Artisan commands you can run them like this
 docker compose run --rm artisan migrate
 docker compose run --rm artisan make:model -fms FooModel
 docker compose run --rm artisan make:contoller FooController
+```
+
+Likewise to run any npm commands you will do it using the _npm_ service
+```
+docker compose run --rm npm install
+docker compose run --rm npm run dev
+docker compose run --rm npm run build
 ```
 
 [Go back](../README.md)

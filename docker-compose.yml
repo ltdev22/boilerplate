@@ -5,11 +5,14 @@ services:
       dockerfile: docker/php/Dockerfile
     volumes:
       - ./working_laravel:/var/www/html
+      - /var/www/html/vendor
+      - /var/www/html/node_modules
     env_file:
       - "./docker/webapp.env"
       - "./working_laravel/.env"
     networks:
       - boilerplate_network
+
   web:
     container_name: web
     build:
@@ -20,6 +23,7 @@ services:
       - mysql
     volumes:
       - ./working_laravel/public:/var/www/html/public
+      - ./working_laravel/storage/app/public:/var/www/html/storage/app/public
     networks:
       - boilerplate_network
     ports:
@@ -57,6 +61,20 @@ services:
       - db_data:/var/lib/mysql
     ports:
       - ${MYSQL_PORT:-3306}:3306
+    networks:
+      - boilerplate_network
+    env_file:
+      - "./docker/webapp.env"
+      - "./working_laravel/.env"
+
+  npm:
+    container_name: npm
+    image: node:lts-alpine
+    working_dir: /var/www/html
+    volumes:
+      - ./working_laravel:/var/www/html
+      - /var/www/html/node_modules
+    entrypoint: [ 'npm' ]
     networks:
       - boilerplate_network
     env_file:
